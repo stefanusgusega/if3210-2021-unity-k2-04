@@ -1,0 +1,14 @@
+PAKET 1 (Arul)
+b. set volume di main menu
+d. cash kaya matahari di pvz
+e. dua jenis senjata, beli pake cash
+
+PAKET 2 (Flo)
+b. set nama pemain di main menu
+f-g-h. karakter
+3. obj pooling
+
+PAKET 3 (Evan)
+a. Multiplayer LAN, matchmaking
+c. desain ulang map
+1. ekstensi c
