@@ -11,7 +11,8 @@ public class GameManager : MonoBehaviour
     public Text m_MessageText;                  // Reference to the overlay Text to display winning text, etc.
     public GameObject m_TankPrefab;             // Reference to the prefab the players will control.
     public TankManager[] m_Tanks;               // A collection of managers for enabling and disabling different aspects of the tanks.
-
+    public Canvas settingCanvas;
+    public PlayerManager playerManager;
 
     private int m_RoundNumber;                  // Which round the game is currently on.
     private WaitForSeconds m_StartWait;         // Used to have a delay whilst the round starts.
@@ -25,6 +26,8 @@ public class GameManager : MonoBehaviour
         // Create the delays so they only have to be made once.
         m_StartWait = new WaitForSeconds(m_StartDelay);
         m_EndWait = new WaitForSeconds(m_EndDelay);
+        GameObject tempCanvas = GameObject.Find("SettingCanvas");
+        settingCanvas = tempCanvas.GetComponent<Canvas>();
 
         SpawnAllTanks();
         SetCameraTargets();
@@ -102,6 +105,15 @@ public class GameManager : MonoBehaviour
         m_CameraControl.SetStartPositionAndSize();
 
         // Increment the round number and display text showing the players what round it is.
+        if(playerManager.saved == false)
+        {
+            settingCanvas.enabled = true;
+        }
+        else
+        {
+            settingCanvas.enabled = false;
+        }
+        Debug.Log(settingCanvas.enabled);
         m_RoundNumber++;
         m_MessageText.text = "ROUND " + m_RoundNumber;
 
