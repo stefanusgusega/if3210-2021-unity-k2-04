@@ -11,8 +11,8 @@ public class GameManager : MonoBehaviour
     public Text m_MessageText;                  // Reference to the overlay Text to display winning text, etc.
     public GameObject m_TankPrefab;             // Reference to the prefab the players will control.
     public TankManager[] m_Tanks;               // A collection of managers for enabling and disabling different aspects of the tanks.
+    public InputField playerName;
     public Canvas settingCanvas;
-    public PlayerManager playerManager;
 
     private int m_RoundNumber;                  // Which round the game is currently on.
     private WaitForSeconds m_StartWait;         // Used to have a delay whilst the round starts.
@@ -20,20 +20,18 @@ public class GameManager : MonoBehaviour
     private TankManager m_RoundWinner;          // Reference to the winner of the current round.  Used to make an announcement of who won.
     private TankManager m_GameWinner;           // Reference to the winner of the game.  Used to make an announcement of who won.
 
-
     private void Start()
     {
         // Create the delays so they only have to be made once.
         m_StartWait = new WaitForSeconds(m_StartDelay);
         m_EndWait = new WaitForSeconds(m_EndDelay);
-        GameObject tempCanvas = GameObject.Find("SettingCanvas");
-        settingCanvas = tempCanvas.GetComponent<Canvas>();
+        settingCanvas = settingCanvas.GetComponent<Canvas>();
 
         SpawnAllTanks();
         SetCameraTargets();
 
         // Once the tanks have been created and the camera is using them as targets, start the game.
-        StartCoroutine(GameLoop());
+        // StartCoroutine(GameLoop());
     }
 
 
@@ -67,7 +65,6 @@ public class GameManager : MonoBehaviour
         m_CameraControl.m_Targets = targets;
     }
 
-
     // This is called from start and will run each phase of the game one after another.
     private IEnumerator GameLoop()
     {
@@ -94,6 +91,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void onClickButtonSave()
+    {
+        PlayerPrefs.SetString("PlayerName", playerName.text);
+        settingCanvas.gameObject.SetActive(false);
+        StartCoroutine(GameLoop());
+    }
 
     private IEnumerator RoundStarting()
     {
@@ -105,15 +108,6 @@ public class GameManager : MonoBehaviour
         m_CameraControl.SetStartPositionAndSize();
 
         // Increment the round number and display text showing the players what round it is.
-        if(playerManager.saved == false)
-        {
-            settingCanvas.enabled = true;
-        }
-        else
-        {
-            settingCanvas.enabled = false;
-        }
-        Debug.Log(settingCanvas.enabled);
         m_RoundNumber++;
         m_MessageText.text = "ROUND " + m_RoundNumber;
 
