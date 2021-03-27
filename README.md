@@ -30,3 +30,4 @@ A repository for Platform Based Development task on Unity.
    + Additional maps
 
 ## Credits
+- <b>Low Poly Free Vegetation Pack</b> by <b>Catalin Pavel</b>
