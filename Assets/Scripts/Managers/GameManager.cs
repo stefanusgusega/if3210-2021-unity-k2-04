@@ -10,7 +10,9 @@ public class GameManager : MonoBehaviour
     public CameraControl m_CameraControl;       // Reference to the CameraControl script for control during different phases.
     public Text m_MessageText;                  // Reference to the overlay Text to display winning text, etc.
     public GameObject m_TankPrefab;             // Reference to the prefab the players will control.
+    public GameObject m_PlanePrefab;
     public TankManager[] m_Tanks;               // A collection of managers for enabling and disabling different aspects of the tanks.
+    public PlaneManager[] m_Plane;
     public InputField playerName;
     public Canvas settingCanvas;
 
@@ -28,6 +30,7 @@ public class GameManager : MonoBehaviour
         settingCanvas = settingCanvas.GetComponent<Canvas>();
 
         SpawnAllTanks();
+        SpawnAllPlane();
         SetCameraTargets();
 
         // Once the tanks have been created and the camera is using them as targets, start the game.
@@ -45,6 +48,20 @@ public class GameManager : MonoBehaviour
                 Instantiate(m_TankPrefab, m_Tanks[i].m_SpawnPoint.position, m_Tanks[i].m_SpawnPoint.rotation) as GameObject;
             m_Tanks[i].m_PlayerNumber = i + 1;
             m_Tanks[i].Setup();
+        }
+    }
+
+    private void SpawnAllPlane()
+    {
+        // For all the tanks...
+        for (int i = 0; i < m_Plane.Length; i++)
+        {
+            Debug.Log("hello");
+            // ... create them, set their player number and references needed for control.
+            m_Plane[i].p_Instance =
+                Instantiate(m_PlanePrefab, m_Plane[i].p_SpawnPoint.position, m_Plane[i].p_SpawnPoint.rotation) as GameObject;
+            m_Plane[i].p_PlayerNumber = i + 1;
+            m_Plane[i].Setup();
         }
     }
 
@@ -102,6 +119,7 @@ public class GameManager : MonoBehaviour
     {
         // As soon as the round starts reset the tanks and make sure they can't move.
         ResetAllTanks();
+        ResetAllPlane();
         DisableTankControl();
 
         // Snap the camera's zoom and position to something appropriate for the reset tanks.
@@ -248,6 +266,14 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void ResetAllPlane()
+    {
+        for (int i = 0; i < m_Plane.Length; i++)
+        {
+            m_Plane[i].Reset();
+        }
+    }
+
 
     private void EnableTankControl()
     {
@@ -256,7 +282,6 @@ public class GameManager : MonoBehaviour
             m_Tanks[i].EnableControl();
         }
     }
-
 
     private void DisableTankControl()
     {
